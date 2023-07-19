@@ -3,16 +3,17 @@ import 'package:flutter_sns_practice/components/button.dart';
 import 'package:flutter_sns_practice/components/text_field.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
+  final confirmPasswordTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 50),
                 const Text(
-                  "Hello!",
+                  "Register",
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -48,26 +49,18 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: 'Password',
                   obscureText: true,
                 ),
-                const SizedBox(height: 20),
-                MyButton(text: "Sign In", onTap: () {}),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Not a member?"),
-                    const SizedBox(width: 5),
-                    GestureDetector(
-                      onTap: () => context.go('/register'),
-                      child: const Text(
-                        "Register now!",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: 10),
+                MyTextField(
+                  controller: confirmPasswordTextController,
+                  hintText: 'Confirm Password',
+                  obscureText: true,
                 ),
+                const SizedBox(height: 20),
+                MyButton(
+                  text: "Sign Up",
+                  onTap: () => context.go('/'),
+                ),
+                const SizedBox(height: 20),
               ],
             ),
           ),

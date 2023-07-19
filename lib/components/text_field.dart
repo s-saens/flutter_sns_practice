@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-@freezed
 class MyTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
@@ -20,6 +18,7 @@ class MyTextField extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       decoration: InputDecoration(
+        fillColor: Colors.red,
         hintText: hintText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
