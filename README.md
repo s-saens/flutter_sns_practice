@@ -1,1 +1,3 @@
-# SNS practice project with tutorial made by Mitch Koko
+# SNS project for practice
+
+following tutorial of Mitch Koko
