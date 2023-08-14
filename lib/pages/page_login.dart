@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sns_practice/components/button.dart';
+import 'package:flutter_sns_practice/components/handle_fb_auth_error.dart';
+import 'package:flutter_sns_practice/components/show_indicator.dart';
 import 'package:flutter_sns_practice/components/text_field.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,61 +17,9 @@ class _LoginPageState extends State<LoginPage> {
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
-  void handleError(FirebaseAuthException error, StackTrace stacktrace) {
-    switch (error.code) {
-      case 'invalid-email':
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Invalid email"),
-          ),
-        );
-        break;
-      case 'user-disabled':
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("User disabled"),
-          ),
-        );
-        break;
-      case 'wrong-password':
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Wrong password"),
-          ),
-        );
-        break;
-      case 'user-not-found':
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("User not found"),
-          ),
-        );
-        break;
-      case 'too-many-requests':
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Too many requests"),
-          ),
-        );
-        break;
-      default:
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(error.code),
-          ),
-        );
-    }
-  }
-
   void signIn(BuildContext context) async {
-    showDialog(
-      context: context,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.white,
-        ),
-      ),
-    );
+
+    showIndicator(context);
 
     try {
       await FirebaseAuth.instance
@@ -79,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
           )
           .then((value) => context.go('/home'));
     } on FirebaseAuthException catch (error, stacktrace) {
-      handleError(error, stacktrace);
+      handleFirebaseAuthError(error, stacktrace, context);
     } finally {
       Navigator.pop(context);
     }
