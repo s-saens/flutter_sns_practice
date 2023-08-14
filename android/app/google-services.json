@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "274841748258",
+    "project_id": "flutter-sns-practice",
+    "storage_bucket": "flutter-sns-practice.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:274841748258:android:df67610d59807e33f59b7b",
+        "android_client_info": {
+          "package_name": "com.example.flutter_sns_practice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "274841748258-mmqvl3nq9vsmdpp72locamcp89egvtqd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAioSDOdTGeAYwo6KX1DP75WpvvOWB7MW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "274841748258-mmqvl3nq9vsmdpp72locamcp89egvtqd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

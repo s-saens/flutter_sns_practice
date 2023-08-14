@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sns_practice/components/button.dart';
 import 'package:flutter_sns_practice/components/text_field.dart';
@@ -13,6 +14,76 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
+
+  void handleError(FirebaseAuthException error, StackTrace stacktrace) {
+    switch (error.code) {
+      case 'invalid-email':
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Invalid email"),
+          ),
+        );
+        break;
+      case 'user-disabled':
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("User disabled"),
+          ),
+        );
+        break;
+      case 'wrong-password':
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Wrong password"),
+          ),
+        );
+        break;
+      case 'user-not-found':
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("User not found"),
+          ),
+        );
+        break;
+      case 'too-many-requests':
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Too many requests"),
+          ),
+        );
+        break;
+      default:
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error.code),
+          ),
+        );
+    }
+  }
+
+  void signIn(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.white,
+        ),
+      ),
+    );
+
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+            email: emailTextController.text,
+            password: passwordTextController.text,
+          )
+          .then((value) => context.go('/home'));
+    } on FirebaseAuthException catch (error, stacktrace) {
+      handleError(error, stacktrace);
+    } finally {
+      Navigator.pop(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 20),
-                MyButton(text: "Sign In", onTap: () {}),
+                MyButton(text: "Sign In", onTap: () => signIn(context)),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
