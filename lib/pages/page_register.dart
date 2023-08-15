@@ -101,45 +101,60 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const SizedBox(height: 50),
-                const Icon(
-                  Icons.lock,
-                  size: 100,
+        child: Stack(
+          children: [
+            Positioned(
+              left: 10,
+              top: 20,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios_rounded,
+                  size: 30,
                 ),
-                const SizedBox(height: 50),
-                const Text(
-                  "Register",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 50),
-                emailField,
-                const SizedBox(height: 10),
-                passwordField,
-                const SizedBox(height: 10),
-                confirmPasswordField,
-                const SizedBox(height: 20),
-                isAllValid
-                    ? MyButton(
-                        text: "Sign Up",
-                        onTap: () => context.go('/'),
-                      )
-                    : MyButton(
-                        text: "Sign Up",
-                        onTap: () {},
-                        isInteractable: false,
-                      ),
-                const SizedBox(height: 20),
-              ],
+                onPressed: () => context.go('/'),
+              ),
             ),
-          ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 50),
+                    const Icon(
+                      Icons.lock,
+                      size: 100,
+                    ),
+                    const SizedBox(height: 50),
+                    const Text(
+                      "Register",
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 50),
+                    emailField,
+                    const SizedBox(height: 10),
+                    passwordField,
+                    const SizedBox(height: 10),
+                    confirmPasswordField,
+                    const SizedBox(height: 20),
+                    isAllValid
+                        ? MyButton(
+                            text: "Sign Up",
+                            onTap: () => context.go('/'),
+                          )
+                        : MyButton(
+                            text: "Sign Up",
+                            onTap: () {},
+                            isInteractable: false,
+                          ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
