@@ -13,20 +13,36 @@ void main() async {
   runApp(ProviderScope(child: MyApp()));
 }
 
+myTransitionPage(GoRouterState state, Widget child, Offset offset) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position: Tween<Offset>(begin: offset, end: Offset.zero).animate(CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutQuint,
+        )),
+        child: child,
+      );
+    },
+  );
+}
+
 class MyApp extends ConsumerWidget {
   final GoRouter _router = GoRouter(
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const LoginPage(),
+        pageBuilder: (context, state) => myTransitionPage(state, const LoginPage(), const Offset(-1, 0)),
       ),
       GoRoute(
         path: '/register',
-        builder: (context, state) => const RegisterPage(),
+        pageBuilder: (context, state) => myTransitionPage(state, const RegisterPage(), const Offset(1, 0)),
       ),
       GoRoute(
         path: '/home',
-        builder: (context, state) => const HomePage(),
+        pageBuilder: (context, state) => myTransitionPage(state, const HomePage(), const Offset(-1, 0)),
       ),
     ],
   );
