@@ -1,3 +1,5 @@
-# SNS project for practice
+# Practice
 
-following tutorial of Mitch Koko
+[tutorial by Mitch Koko](https://www.youtube.com/watch?v=prp8-j3W_V0&t=1181s)
+
+Firebase for flutter.
