@@ -8,5 +8,6 @@ void showIndicator(BuildContext context) {
         backgroundColor: Colors.white,
       ),
     ),
+    barrierDismissible: false,
   );
 }
