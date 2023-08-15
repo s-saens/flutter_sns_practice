@@ -59,12 +59,12 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 50),
-                MyTextField(
+                ValidatableTextField(
                   controller: emailTextController,
                   hintText: 'Email',
                 ),
                 const SizedBox(height: 10),
-                MyTextField(
+                ValidatableTextField(
                   controller: passwordTextController,
                   hintText: 'Password',
                   obscureText: true,
