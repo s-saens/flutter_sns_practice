@@ -1,5 +1,5 @@
 # Practice
 
-[tutorial by Mitch Koko](https://www.youtube.com/watch?v=prp8-j3W_V0&t=1181s)
+[tutorial by Mitch Koko](https://youtu.be/yJ7qQxzkh9E)
 
 Firebase for flutter.
