@@ -17,8 +17,11 @@ class MyButton extends StatelessWidget {
     ColorScheme colorScheme = Theme.of(context).buttonTheme.colorScheme!;
     return SizedBox(
       height: 50,
-      child: GestureDetector(
-        onTap: onTap,
+      child: TextButton(
+        onPressed: onTap,
+        style: ButtonStyle(
+          padding: MaterialStateProperty.all(EdgeInsets.zero),
+        ),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
