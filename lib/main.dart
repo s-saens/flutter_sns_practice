@@ -49,7 +49,7 @@ class MyApp extends ConsumerWidget {
 
   MyApp({super.key});
 
-  final seedColorProvider = StateProvider((ref) => Colors.deepPurple);
+  final seedColorProvider = StateProvider((ref) => Colors.blue);
 
   // This widget is the root of your application.
   @override

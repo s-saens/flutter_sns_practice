@@ -59,31 +59,30 @@ class _ValidatableTextFieldState extends State<ValidatableTextField> {
     setNotValidTexts();
     listenDependents();
 
-    return Stack(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Padding(
-          padding: _validatable
-              ? const EdgeInsets.only(
-                  right: 35,
-                )
-              : const EdgeInsets.all(0),
-          child: TextField(
-            controller: widget.controller,
-            obscureText: widget.obscureText,
-            decoration: InputDecoration(
-              fillColor: Colors.red,
-              hintText: widget.hintText,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+        Flexible(
+          flex: 6,
+          child: SizedBox(
+            height: 50,
+            child: TextField(
+              controller: widget.controller,
+              obscureText: widget.obscureText,
+              decoration: InputDecoration(
+                fillColor: Colors.red,
+                hintText: widget.hintText,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
+              onChanged: (value) => setState(() {}),
             ),
-            onChanged: (value) => setState(() {}),
           ),
         ),
         _validatable
-            ? Positioned(
-                right: 0,
-                height: 60,
+            ? Flexible(
+                flex: 1,
                 child: _isValid
                     ? const Icon(
                         Icons.check_circle_rounded,
@@ -101,7 +100,10 @@ class _ValidatableTextFieldState extends State<ValidatableTextField> {
                         ),
                       ),
               )
-            : const SizedBox(),
+            : const Flexible(
+                flex: 0,
+                child: SizedBox(),
+              ),
       ],
     );
   }

@@ -14,7 +14,7 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme colorScheme = Theme.of(context).colorScheme;
+    ColorScheme colorScheme = Theme.of(context).buttonTheme.colorScheme!;
     return SizedBox(
       height: 50,
       child: GestureDetector(
@@ -22,7 +22,7 @@ class MyButton extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: isInteractable ? colorScheme.onPrimaryContainer : colorScheme.primaryContainer,
+            color: isInteractable ? colorScheme.primary : colorScheme.primary.withOpacity(0.6),
           ),
           child: Center(child: Text(text, style: TextStyle(color: colorScheme.onPrimary))),
         ),
