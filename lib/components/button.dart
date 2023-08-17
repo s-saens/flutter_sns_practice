@@ -21,6 +21,7 @@ class MyButton extends StatelessWidget {
         onPressed: onTap,
         style: ButtonStyle(
           padding: MaterialStateProperty.all(EdgeInsets.zero),
+          mouseCursor: MaterialStateProperty.all(isInteractable ? SystemMouseCursors.click : SystemMouseCursors.basic),
         ),
         child: Container(
           decoration: BoxDecoration(
