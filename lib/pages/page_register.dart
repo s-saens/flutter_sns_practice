@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sns_practice/components/button.dart';
+import 'package:flutter_sns_practice/components/handle_fb_auth_error.dart';
 import 'package:flutter_sns_practice/components/show_indicator.dart';
 import 'package:flutter_sns_practice/components/text_field.dart';
 import 'package:go_router/go_router.dart';
@@ -22,8 +24,21 @@ class _RegisterPageState extends State<RegisterPage> {
   late V passwordField;
   late V confirmPasswordField;
 
-  void signUp() {
+  void signUp() async {
+    final c = context;
     showIndicator(context);
+
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailTextController.text,
+        password: passwordTextController.text,
+      );
+      if (context.mounted) c.go('/');
+    } on FirebaseAuthException catch (error, stacktrace) {
+      handleFirebaseAuthError(error, stacktrace, context);
+    } finally {
+      Navigator.pop(context);
+    }
   }
 
   bool isEmail(String input) {
@@ -105,11 +120,12 @@ class _RegisterPageState extends State<RegisterPage> {
           children: [
             Positioned(
               left: 10,
-              top: 20,
+              top: 30,
               child: IconButton(
                 icon: const Icon(
-                  Icons.arrow_back_ios_rounded,
+                  Icons.arrow_back_ios_sharp,
                   size: 30,
+                  opticalSize: 1,
                 ),
                 onPressed: () => context.go('/'),
               ),
@@ -142,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     isAllValid
                         ? MyButton(
                             text: "Sign Up",
-                            onTap: () => context.go('/'),
+                            onTap: signUp,
                           )
                         : MyButton(
                             text: "Sign Up",
