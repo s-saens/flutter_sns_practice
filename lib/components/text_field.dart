@@ -22,6 +22,8 @@ class ValidatableTextField extends StatefulWidget {
   State<ValidatableTextField> createState() => _ValidatableTextFieldState();
 }
 
+const double textFieldHeight = 50.0;
+
 class _ValidatableTextFieldState extends State<ValidatableTextField> {
   final List<String> notValidTexts = [];
 
@@ -63,9 +65,9 @@ class _ValidatableTextFieldState extends State<ValidatableTextField> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
-          flex: 6,
+          flex: 7,
           child: SizedBox(
-            height: 50,
+            height: textFieldHeight,
             child: TextField(
               controller: widget.controller,
               obscureText: widget.obscureText,
