@@ -36,7 +36,11 @@ class ChatItem extends StatelessWidget {
       ),
       child: Container(
           decoration: BoxDecoration(
-            color: colorScheme.primaryContainer.withAlpha(isMine ? 255 : 100), // 200 is 80% (0-255
+            color: colorScheme.primaryContainer.withAlpha(isMine ? 100 : 0),
+            border: Border.all(
+              color: colorScheme.primary,
+              width: 0.5,
+            ),
             borderRadius: BorderRadius.only(
               topLeft: isMine ? borderRadius : zeroRadius,
               topRight: isMine ? zeroRadius : borderRadius,

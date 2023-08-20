@@ -1,28 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sns_practice/datas/constants_hive_box.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 typedef Validator = Map<bool Function(String?), String>;
+typedef SubmitFunction = void Function(String);
 
 class ValidatableTextField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
   final bool obscureText;
+  final SubmitFunction? onSubmit;
   final Validator? validator;
   final List<TextEditingController>? dependents;
+  final String? storageId; // this will be used for identifying the text field, for storing and retrieving the value.
 
   const ValidatableTextField({
     super.key,
     required this.controller,
     required this.hintText,
     this.obscureText = false,
+    this.onSubmit,
     this.validator,
     this.dependents,
+    this.storageId = "",
   });
 
   @override
   State<ValidatableTextField> createState() => _ValidatableTextFieldState();
 }
 
-const double textFieldHeight = 50.0;
+const double textFieldHeight = 70.0;
 
 class _ValidatableTextFieldState extends State<ValidatableTextField> {
   final List<String> notValidTexts = [];
@@ -56,6 +63,33 @@ class _ValidatableTextFieldState extends State<ValidatableTextField> {
     }
   }
 
+  saveToStorage() {
+    if (widget.storageId != "") {
+      Hive.box(TEXT_FIELD).put(widget.storageId, widget.controller.text);
+    }
+  }
+
+  loadFromStorage() {
+    if (widget.storageId != "") {
+      widget.controller.text = Hive.box(TEXT_FIELD).get(widget.storageId, defaultValue: "");
+    }
+  }
+
+  @override
+  void initState() {
+    loadFromStorage();
+    focusNode.addListener(saveToStorage);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    focusNode.removeListener(saveToStorage);
+    super.dispose();
+  }
+
+  final focusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     setNotValidTexts();
@@ -71,6 +105,7 @@ class _ValidatableTextFieldState extends State<ValidatableTextField> {
             child: TextField(
               controller: widget.controller,
               obscureText: widget.obscureText,
+              textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
                 fillColor: Colors.red,
                 hintText: widget.hintText,
@@ -79,6 +114,8 @@ class _ValidatableTextFieldState extends State<ValidatableTextField> {
                 ),
               ),
               onChanged: (value) => setState(() {}),
+              onSubmitted: widget.onSubmit,
+              focusNode: focusNode,
             ),
           ),
         ),

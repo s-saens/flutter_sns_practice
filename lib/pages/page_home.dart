@@ -20,9 +20,11 @@ class _HomePageState extends State<HomePage> {
   final scrollController = ScrollController();
 
   void scrollToBottom() {
+    if (!scrollController.hasClients) return;
+    print("1");
     scrollController.animateTo(
-      scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 200),
+      scrollController.position.maxScrollExtent + 50,
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
   }
@@ -37,6 +39,7 @@ class _HomePageState extends State<HomePage> {
     });
 
     scrollToBottom();
+
     messageTextController.clear();
   }
 
@@ -47,16 +50,13 @@ class _HomePageState extends State<HomePage> {
       stream: FirebaseFirestore.instance.collection(COLLECTIONS_USERS).orderBy(DOCS_TIMESTAMP, descending: false).limitToLast(30).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          SchedulerBinding.instance.addPostFrameCallback((_) {
-            scrollToBottom();
-          });
+          if (!scrollController.hasClients) SchedulerBinding.instance.addPostFrameCallback((_) => scrollToBottom());
           final len = snapshot.data!.docs.length;
           return ListView.builder(
-            itemCount: len + 2,
+            padding: const EdgeInsets.only(bottom: 100, top: 50),
+            itemCount: len,
             itemBuilder: (context, index) {
-              if (index == 0) return const SizedBox(height: 20);
-              if (index == len + 1) return const SizedBox(height: 100);
-              DocumentSnapshot docs = snapshot.data!.docs[index - 1];
+              DocumentSnapshot docs = snapshot.data!.docs[index];
               return ChatItem(
                 email: docs[DOCS_EMAIL],
                 message: docs[DOCS_MESSAGE],
@@ -84,94 +84,86 @@ class _HomePageState extends State<HomePage> {
     ThemeData theme = Theme.of(context);
 
     return Scaffold(
-      body: Center(
-        child: Stack(
-          children: [
-            getStreamBuilder(),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              left: 0,
-              child: Container(
-                color: Theme.of(context).cardColor.withOpacity(0.5),
-                child: ClipRRect(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        bottom: 40,
-                        left: 20,
-                        right: 20,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: messageTextController,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Message',
+      body: SafeArea(
+        child: Center(
+          child: Stack(
+            children: [
+              getStreamBuilder(),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                  color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
+                  child: ClipRRect(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                          left: 20,
+                          right: 20,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: messageTextController,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Message',
+                                ),
+                                onSubmitted: (value) => postMessage(value),
                               ),
-                              onSubmitted: (value) => postMessage(value),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () => postMessage(messageTextController.text),
-                            icon: const Icon(Icons.send),
-                          ),
-                        ],
+                            IconButton(
+                              onPressed: () => postMessage(messageTextController.text),
+                              icon: const Icon(Icons.send),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      theme.cardColor.withAlpha(255),
-                      theme.cardColor.withAlpha(0),
-                    ],
-                  ),
-                ),
-                child: const SizedBox(height: 50),
-              ),
-            ),
-            SafeArea(
-              child: Row(
-                children: [
-                  const SizedBox(width: 20),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: theme.cardColor,
-                      borderRadius: BorderRadius.circular(50),
-                      boxShadow: [
-                        BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 5, offset: const Offset(2, 2)),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        theme.scaffoldBackgroundColor.withAlpha(255),
+                        theme.scaffoldBackgroundColor.withAlpha(0),
                       ],
                     ),
-                    child: IconButton(
-                      onPressed: () {
-                        signOut();
-                        print("!");
-                      },
-                      icon: const Icon(
-                        Icons.logout,
-                        size: 30,
-                      ),
+                  ),
+                  child: const SizedBox(height: 50),
+                ),
+              ),
+              Positioned(
+                top: 20,
+                left: 20,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: theme.cardColor.withAlpha(170),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: IconButton(
+                    onPressed: signOut,
+                    icon: const Icon(
+                      Icons.logout,
+                      size: 30,
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

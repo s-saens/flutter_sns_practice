@@ -62,12 +62,15 @@ class _LoginPageState extends State<LoginPage> {
                 ValidatableTextField(
                   controller: emailTextController,
                   hintText: 'Email',
+                  storageId: "last email",
                 ),
                 const SizedBox(height: 10),
                 ValidatableTextField(
                   controller: passwordTextController,
                   hintText: 'Password',
                   obscureText: true,
+                  onSubmit: (v) => signIn(context),
+                  storageId: "last password",
                 ),
                 const SizedBox(height: 20),
                 MyButton(text: "Sign In", onTap: () => signIn(context)),
